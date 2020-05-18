@@ -1,6 +1,5 @@
 import React from 'react';
 import { Status } from './quiz.container';
-import { on } from 'cluster';
 
 interface Iquestion {
   question: string;
@@ -12,20 +11,24 @@ interface Iprops {
     buttonAnswer: number
   ) => (e: React.MouseEvent<HTMLButtonElement>) => void;
   onClickStart: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  setInitials: (s: string) => void;
   question: Iquestion;
   status: number;
   score: number;
   seconds: number;
+  initials: string;
 }
 
 const QuizView = (props: Iprops) => {
   const {
     onClickAnswerWrapper,
     onClickStart,
+    setInitials,
     question,
     status,
     score,
     seconds,
+    initials,
   } = props;
   return status === Status.Start ? (
     <div className="row">
@@ -66,6 +69,17 @@ const QuizView = (props: Iprops) => {
     <div className="row text-center">
       <h1 className="col-12">Your score is: {score}</h1>
       <h1 className="col-12">You completed the quiz in: {seconds}</h1>
+      <label htmlFor="initials">Initials: </label>
+      <input
+        id="initials"
+        value={initials}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setInitials(e.target.value);
+        }}
+      />
+      <button className="btn btn-primary" onClick={onClickStart}>
+        Save Initials and Restart
+      </button>
     </div>
   );
 };
